@@ -87,8 +87,8 @@ $template LogglyFormat,"<%%pri%>%protocol-version% %timestamp:::date-rfc3339% %H
 <% if node['loggly']['tls']['enabled'] %>
 $DefaultNetstreamDriverCAFile <%= node['loggly']['tls']['cert_path'] %>/loggly_full.crt
 $ActionSendStreamDriver gtls
-$ActionSendStreamDriver 1
-$ActionSendStreamDriver x509/name
+$ActionSendStreamDriverMode 1
+$ActionSendStreamDriverAuthMode x509/name
 $ActionSendStreamDriverPermittedPeer *.loggly.com
 <% end %>
 

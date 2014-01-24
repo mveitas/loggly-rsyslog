@@ -25,6 +25,14 @@ describe 'loggly-rsyslog::default' do
 
   end
 
+  it 'contains the correct TLS configuration settings' do
+    expect(chef_run).to render_file('/etc/rsyslog.conf').with_content(/^\$DefaultNetstreamDriverCAFile \/etc\/rsyslog.d\/keys\/ca.d\/loggly_full.crt/)    
+    expect(chef_run).to render_file('/etc/rsyslog.conf').with_content(/^\$ActionSendStreamDriver gtls/)    
+    expect(chef_run).to render_file('/etc/rsyslog.conf').with_content(/^\$ActionSendStreamDriverMode 1/)    
+    expect(chef_run).to render_file('/etc/rsyslog.conf').with_content(/^\$ActionSendStreamDriverAuthMode x509\/name/)
+    expect(chef_run).to render_file('/etc/rsyslog.conf').with_content(/^\$ActionSendStreamDriverPermittedPeer \*\.loggly.com/)    
+  end
+
   it 'notifies the rsyslog service to restart' do
     rsyslog_template = chef_run.find_resource(:template, '/etc/rsyslog.conf')
     expect(rsyslog_template).to notify('service[rsyslog]').to(:restart)
