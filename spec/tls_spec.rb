@@ -20,7 +20,7 @@ describe 'loggly-rsyslog::tls' do
     expect(chef_run).to create_directory('/etc/rsyslog.d/keys/ca.d').with(
       owner: 'root',
       group: 'root',
-      mode: 0640
+      mode: 0644
     )
   end
 
