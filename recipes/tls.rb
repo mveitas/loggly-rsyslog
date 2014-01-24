@@ -16,7 +16,7 @@ cert_path = node['loggly']['tls']['cert_path']
 directory cert_path do
   owner 'root'
   group 'root'
-  mode 0640
+  mode 0644
   action :create
   recursive true
 end
