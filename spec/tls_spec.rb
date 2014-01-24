@@ -19,8 +19,8 @@ describe 'loggly-rsyslog::tls' do
   it 'creates a directory for the certificate' do
     expect(chef_run).to create_directory('/etc/rsyslog.d/keys/ca.d').with(
       owner: 'root',
-      group: 'root',
-      mode: 0644
+      group: 'syslog',
+      mode: 0655
     )
   end
 
