@@ -67,8 +67,14 @@ describe 'loggly-rsyslog::default' do
       :tags => nil  
     )
 
-    pending("validate the contents of the log_files")
+    expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^.*\[some_token_value \] %msg%/)    
+
     expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^\$ModLoad imfile/)
+
+    expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^\$InputFileName \/var\/log\/somefile/)    
+    expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^\$InputFileTag sometag\:/)
+    expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^\$InputFileStateFile somefile.state/)
+    
   end
 
 end
