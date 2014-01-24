@@ -1,6 +1,6 @@
 Loggly rsyslog Cookbook
 ================
-Installs and configures rsyslog for use with [Loggly](loggly.com).
+Installs and configures rsyslog for use with [Loggly](http://loggly.com).
 
 Requirements
 ------------
