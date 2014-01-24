@@ -47,7 +47,7 @@ describe 'loggly-rsyslog::default' do
       owner: 'root',
       group: 'root',
       variables: ({
-        :tags => 'tag=\"test\", tag=\"foo\", tag=\"bar\"'  
+        :tags => 'tag=\"test\" tag=\"foo\" tag=\"bar\"'  
       })
     )  
   end

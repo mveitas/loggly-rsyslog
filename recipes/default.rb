@@ -19,7 +19,7 @@ template '/etc/rsyslog.conf' do
   group 'root'
   mode 0644
   variables({
-    :tags => node['loggly']['tags'].nil? || node['loggly']['tags'].empty? ? '' : "tag=\\\"#{node['loggly']['tags'].join("\\\", tag=\\\"")}\\\""
+    :tags => node['loggly']['tags'].nil? || node['loggly']['tags'].empty? ? '' : "tag=\\\"#{node['loggly']['tags'].join("\\\" tag=\\\"")}\\\""
   })
   notifies :restart, "service[rsyslog]", :delayed
 end
