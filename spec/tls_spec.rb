@@ -41,4 +41,8 @@ describe 'loggly-rsyslog::tls' do
     expect(chef_run).to run_bash('bundle certificate')
   end
   
+  it 'loads the imfile module when log directories are not empty' do
+    pending("Need to figure out stubbing of File.exists? as it used in many places inside Chef")
+  end
+
 end
