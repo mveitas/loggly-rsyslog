@@ -30,7 +30,7 @@ of a hash used to describe a file to monitor.
     }
     ```
 
-* `node['loggly']['logdirs']` - A list of directories to monitor (optional). The rsyslog.conf template will create an [imfile](http://www.rsyslog.com/doc/imfile.html) block for each file ending in '.log' in that directory. Each logdir in the list is of the format:
+* `node['loggly']['log_dirs']` - A list of directories to monitor (optional). The rsyslog.conf template will create an [imfile](http://www.rsyslog.com/doc/imfile.html) block for each file ending in '.log' in that directory. Each logdir in the list is of the format:
     ```
     {
         :directory => "/var/log/directory",
