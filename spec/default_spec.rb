@@ -8,6 +8,15 @@ describe 'loggly-rsyslog::default' do
     end.converge(described_recipe)
   end
 
+  context 'when the loggly token is not set' do
+    let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+    it 'raises an error' do
+      expect {
+        chef_run
+      }.to raise_error
+    end
+  end
+
   context 'when rsyslog tls is disabled' do
     let(:chef_run) do
       ChefSpec::Runner.new do |node|
@@ -109,6 +118,23 @@ describe 'loggly-rsyslog::default' do
     )
 
     expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^\$ModLoad imfile/)
-  end 
+    expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^\$InputFilePollInterval 10/)
+  end
+
+  {
+    'RepeatedMsgReduction' => 'on',
+    'FileOwner' => 'syslog',
+    'FileGroup' =>'adm',
+    'FileCreateMode' => '0640',
+    'DirCreateMode' =>'0755',
+    'Umask' => '0022',
+    'PrivDropToUser' => 'syslog',
+    'PrivDropToGroup' => 'syslog',
+    'WorkDirectory' => '/var/spool/rsyslog'
+  }.each do |k, v| 
+    it 'sets the rsyslog #{k} configuration value' do
+      expect(chef_run).to render_file('/etc/rsyslog.conf').with_content(/^\$#{k} #{v}/)
+    end
+  end
 
 end

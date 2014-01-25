@@ -48,6 +48,18 @@ of a hash used to describe a file to monitor.
 * `node['loggly']['rsyslog']['host']` - Name of the remote loggly syslog host
 * `node['loggly']['rsyslog']['port']` - Port of the remote loggly syslog host (defaults to 514 and if TLS is enabled to 6514)
 
+The following are attributes that manage some standard rsyslog configuration. See the rsyslog docs for more information on each of these.
+* `node['loggly']['rsyslog']['repeat_msg']` - Set the RepeatedMsgReduction configuration value
+* `node['loggly']['rsyslog']['file_owner']` - Set the FileOwnder configuration value
+* `node['loggly']['rsyslog']['file_group']` - Set the FileGroup configuration value
+* `node['loggly']['rsyslog']['file_create_mode']` - Set the FileCreateMode configuraton value
+* `node['loggly']['rsyslog']['dir_create_mode']` - Set the DirCreateMode configuraton value
+* `node['loggly']['rsyslog']['umask']` - Set the Umask configuration value
+* `node['loggly']['rsyslog']['priv_drop_to_user']` - Set the PrivDropToUser configuration value
+* `node['loggly']['rsyslog']['priv_drop_to_group']` - Set the PrivDropToGroup configuration value
+* `node['loggly']['rsyslog']['work_directory']` - Set the WorkDirectory configuration value
+
+
 Recipes
 -------
 Include the default recipe in the run list or a cookbook. The rsyslog service will restart after changes to the rsyslog.conf are made.
