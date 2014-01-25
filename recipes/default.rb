@@ -21,5 +21,5 @@ template '/etc/rsyslog.conf' do
   variables({
     :tags => node['loggly']['tags'].nil? || node['loggly']['tags'].empty? ? '' : "tag=\\\"#{node['loggly']['tags'].join("\\\" tag=\\\"")}\\\""
   })
-  notifies :restart, "service[rsyslog]", :delayed
+  notifies :restart, "service[rsyslog]", :immediate
 end
