@@ -67,6 +67,7 @@ $InputFileName <%= logfile['filename'] %>
 $InputFileTag <%= logfile['tag'] %>:
 $InputFileStateFile <%= logfile['statefile'] %>
 $InputRunFileMonitor
+
   <% end %>
 
   <% node['loggly']['log_dirs'].each do |logdir| %>
@@ -76,6 +77,7 @@ $InputFileName <%= "#{logdir['directory']}/#{filename}" %>
 $InputFileTag <%= logdir['tag'] %>:
 $InputFileStateFile state-<%= filename %>
 $InputRunFileMonitor
+
       <% end %>
     <% end %>
   <% end %>

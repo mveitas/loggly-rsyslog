@@ -20,7 +20,7 @@ describe 'loggly-rsyslog::tls' do
     expect(chef_run).to create_directory('/etc/rsyslog.d/keys/ca.d').with(
       owner: 'root',
       group: 'syslog',
-      mode: 0655
+      mode: 0750
     )
   end
 
@@ -29,12 +29,16 @@ describe 'loggly-rsyslog::tls' do
   end
 
   it 'downloads the certifcates' do
-    expect(chef_run).to create_remote_file('download intermediate cert')
-    expect(chef_run).to create_remote_file('download loggly.com cert')
+    expect(chef_run).to create_remote_file('download intermediate cert').with(
+      path: "/var/chef/cache/sf_bundle.crt"
+    )
+    expect(chef_run).to create_remote_file('download loggly.com cert').with(
+      path: "/var/chef/cache/loggly.com.crt"
+    )
   end
 
   it 'creates the loggly certificate' do
     expect(chef_run).to run_bash('bundle certificate')
   end
-
+  
 end
