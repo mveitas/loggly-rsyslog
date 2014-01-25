@@ -19,6 +19,7 @@ template '/etc/rsyslog.conf' do
   group 'root'
   mode 0644
   variables({
+    :monitor_files => !node['loggly']['log_files'].empty? || !node['loggly']['log_dirs'].empty?,
     :tags => node['loggly']['tags'].nil? || node['loggly']['tags'].empty? ? '' : "tag=\\\"#{node['loggly']['tags'].join("\\\" tag=\\\"")}\\\""
   })
   notifies :restart, "service[rsyslog]", :immediate

@@ -13,7 +13,7 @@
 $ModLoad imuxsock # provides support for local system logging
 $ModLoad imklog   # provides kernel logging support (previously done by rklogd)
 #$ModLoad immark  # provides --MARK-- message capability
-<% if node['loggly']['log_files'] %>
+<% if @monitor_files %>
 $ModLoad imfile
 <% end %>
 
@@ -60,7 +60,7 @@ $WorkDirectory /var/spool/rsyslog
 #
 $IncludeConfig /etc/rsyslog.d/*.conf
 
-<% if node['loggly']['log_files'] %>
+<% if @monitor_files %>
 
   <% node['loggly']['log_files'].each do |logfile| %>
 $InputFileName <%= logfile['filename'] %>

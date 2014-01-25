@@ -9,6 +9,11 @@ describe 'loggly-rsyslog::default' do
   end
 
   context 'when rsyslog tls is disabled' do
+    let(:chef_run) do
+      ChefSpec::Runner.new do |node|
+        node.set['loggly']['token'] = 'some_token_value'
+      end.converge(described_recipe)
+    end
 
     before do
       chef_run.node.set['loggly']['tls']['enabled'] = false
@@ -43,7 +48,8 @@ describe 'loggly-rsyslog::default' do
       owner: 'root',
       group: 'root',
       variables: ({
-        :tags => ''  
+        :tags => '',
+        :monitor_files => false  
       })
     )  
   end
@@ -55,12 +61,13 @@ describe 'loggly-rsyslog::default' do
       owner: 'root',
       group: 'root',
       variables: ({
-        :tags => 'tag=\"test\" tag=\"foo\" tag=\"bar\"'  
+        :tags => 'tag=\"test\" tag=\"foo\" tag=\"bar\"',
+        :monitor_files => false  
       })
     )  
   end
 
-  it 'creates a rsyslog.conf file with file entries' do
+  it 'loads the imfile module when log_files is not empty' do
     runner = ChefSpec::Runner.new do |node|
       node.set['loggly']['token'] = 'some_token_value'
       node.set['loggly']['log_files'] = 
@@ -72,7 +79,10 @@ describe 'loggly-rsyslog::default' do
     expect(runner).to create_template('/etc/rsyslog.conf').with(
       owner: 'root',
       group: 'root',
-      :tags => nil  
+      variables: ({
+        :tags => '',
+        :monitor_files => true  
+      })
     )
 
     expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^.*\[some_token_value \] %msg%/)    
@@ -82,7 +92,23 @@ describe 'loggly-rsyslog::default' do
     expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^\$InputFileName \/var\/log\/somefile/)    
     expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^\$InputFileTag sometag\:/)
     expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^\$InputFileStateFile somefile.state/)
-    
   end
+
+  it 'loads the imfile module when log_files is not empty' do
+    runner = ChefSpec::Runner.new do |node|
+      node.set['loggly']['token'] = 'some_token_value'
+      node.set['loggly']['log_files'] = 
+      [ { filename: '/var/log/somefile', tag: 'sometag', statefile: 'somefile.state' } ]
+    end.converge(described_recipe)  
+
+    expect(runner).to create_template('/etc/rsyslog.conf').with(
+      variables: ({
+        :tags => '',
+        :monitor_files => true  
+      })
+    )
+
+    expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^\$ModLoad imfile/)
+  end 
 
 end
