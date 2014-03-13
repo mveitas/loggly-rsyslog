@@ -13,10 +13,16 @@ Platform
 --------
 Tested against Ubuntu 12.04
 
+Encrypted Databag
+-----------------
+Create a data bag named 'loggly' then an encrypted data bag item with the following attributes:
+
+* `id` - token
+* `token` - your Loggly customer token
 
 Attributes
 ----------
-* `node['loggly']['token']` - Your Loggly customer token (required)
+* `node['loggly']['token']` - Your Loggly customer token (retrieved from encrypted data bag item) 
 * `node['loggly']['tags']` - A list of event tags to apply to a message (https://www.loggly.com/docs/tags/) (optional)
 
 * `node['loggly']['log_files']` - A list of files rsyslog should monitor. (optional). Below is an example
@@ -49,6 +55,7 @@ of a hash used to describe a file to monitor.
 * `node['loggly']['rsyslog']['port']` - Port of the remote loggly syslog host (defaults to 514 and if TLS is enabled to 6514)
 
 The following are attributes that manage some standard rsyslog configuration. See the rsyslog docs for more information on each of these.
+* `node['loggly']['rsyslog']['conf']` - Set the location of the rsyslog conf file to manage
 * `node['loggly']['rsyslog']['repeat_msg']` - Set the RepeatedMsgReduction configuration value
 * `node['loggly']['rsyslog']['file_owner']` - Set the FileOwnder configuration value
 * `node['loggly']['rsyslog']['file_group']` - Set the FileGroup configuration value
@@ -82,4 +89,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-

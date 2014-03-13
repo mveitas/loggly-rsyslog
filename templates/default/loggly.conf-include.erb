@@ -1,0 +1,38 @@
+#  /etc/rsyslog.d/99-loggly.conf Configuration file for rsyslog sending to loggly.com.
+
+<% if @monitor_files %>
+
+  <% node['loggly']['log_files'].each do |logfile| %>
+$InputFileName <%= logfile['filename'] %>
+$InputFileTag <%= logfile['tag'] %>:
+$InputFileStateFile <%= logfile['statefile'] %>
+$InputRunFileMonitor
+
+  <% end %>
+
+  <% node['loggly']['log_dirs'].each do |logdir| %>
+    <% Dir.foreach(logdir['directory']) do |filename| %>
+      <% if filename =~ /[\w\.-_\d]+\.log$/ %>
+$InputFileName <%= "#{logdir['directory']}/#{filename}" %>
+$InputFileTag <%= logdir['tag'] %>:
+$InputFileStateFile state-<%= filename %>
+$InputRunFileMonitor
+
+      <% end %>
+    <% end %>
+  <% end %>
+
+$InputFilePollInterval <%= node['loggly']['rsyslog']['input_file_poll_interval'] %>
+<% end %>
+
+$template LogglyFormat,"<%%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msgid% [<%= node['loggly']['token'] %>@41058 <%= @tags %>] %msg%\n"
+
+<% if node['loggly']['tls']['enabled'] %>
+$DefaultNetstreamDriverCAFile <%= node['loggly']['tls']['cert_path'] %>/loggly_full.crt
+$ActionSendStreamDriver gtls
+$ActionSendStreamDriverMode 1
+$ActionSendStreamDriverAuthMode x509/name
+$ActionSendStreamDriverPermittedPeer *.loggly.com
+<% end %>
+
+*.* @@<%= node['loggly']['rsyslog']['host'] %>:<%= node['loggly']['rsyslog']['port'] %>;LogglyFormat
