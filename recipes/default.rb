@@ -13,8 +13,15 @@ service "rsyslog"
 
 include_recipe "loggly-rsyslog::tls" if node['loggly']['tls']['enabled']
 
-template '/etc/rsyslog.conf' do
-  source 'loggly.conf.erb'
+# If we're not replacing the default rsyslog.conf, use the include conf source.
+if node['loggly']['rsyslog']['conf'] != '/etc/rsyslog.conf'
+  rsyslog_conf_source = 'loggly.conf-include.erb'
+else
+  rsyslog_conf_source = 'loggly.conf.erb'
+end
+
+template node['loggly']['rsyslog']['conf'] do
+  source rsyslog_conf_source
   owner 'root'
   group 'root'
   mode 0644
