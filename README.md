@@ -71,6 +71,16 @@ Recipes
 -------
 Include the default recipe in the run list or a cookbook. The rsyslog service will restart after changes to the rsyslog.conf are made.
 
+Running with Vagrant
+--------------------
+The create_data_bag.rb is a helper script that can be used to create the data bag for loggly for use with Vagrant and Chef Solo. The script expects a single arguement, the value of the loggly token.
+
+Add the following two lines into your Vagrantfile in the chef_solo provisioner configuration:
+
+```
+chef.data_bags_path = './data_bags'
+chef.encrypted_data_bag_secret_key_path = './encrypted_data_bag_secret'
+```
 
 License & Authors
 -----------------
