@@ -2,6 +2,10 @@ loggly-rsyslog Cookbook CHANGELOG
 ==========================
 This file is used to list changes made in each version of the loggly-rsyslog cookbook.
 
+v1.1.0
+------------------
+- Use an encrypted databag to retrieve the loggly token instead of a node attribute
+
 v1.0.1
 -------------------
 - Set rsyslog configuration values to be configurable via attributes

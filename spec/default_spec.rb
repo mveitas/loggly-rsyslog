@@ -1,7 +1,12 @@
 require 'spec_helper'
 
 describe 'loggly-rsyslog::default' do
-  
+
+  before do
+    Chef::EncryptedDataBagItem.stub(:load).with('loggly', 'token').and_return(
+      { 'id' => 'token', 'token' => 'abc123' })
+  end
+
   let(:chef_run) do
     ChefSpec::Runner.new do |node|
       node.set['loggly']['token'] = 'some_token_value'
@@ -9,7 +14,12 @@ describe 'loggly-rsyslog::default' do
   end
 
   context 'when the loggly token is not set' do
+    before do
+      Chef::EncryptedDataBagItem.stub(:load).with('loggly', 'token').and_return(nil)
+    end
+
     let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
     it 'raises an error' do
       expect {
         chef_run
@@ -58,7 +68,8 @@ describe 'loggly-rsyslog::default' do
       group: 'root',
       variables: ({
         :tags => '',
-        :monitor_files => false  
+        :monitor_files => false,
+        :token => 'abc123'
       })
     )  
   end
@@ -71,7 +82,8 @@ describe 'loggly-rsyslog::default' do
       group: 'root',
       variables: ({
         :tags => 'tag=\"test\" tag=\"foo\" tag=\"bar\"',
-        :monitor_files => false  
+        :monitor_files => false,
+        :token => 'abc123'  
       })
     )  
   end
@@ -90,11 +102,12 @@ describe 'loggly-rsyslog::default' do
       group: 'root',
       variables: ({
         :tags => '',
-        :monitor_files => true  
+        :monitor_files => true,
+        :token => 'abc123'  
       })
     )
 
-    expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^.*\[some_token_value \] %msg%/)    
+    expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^.*\[abc123@41058 \] %msg%/)    
 
     expect(runner).to render_file('/etc/rsyslog.conf').with_content(/^\$ModLoad imfile/)
 
@@ -113,7 +126,8 @@ describe 'loggly-rsyslog::default' do
     expect(runner).to create_template('/etc/rsyslog.conf').with(
       variables: ({
         :tags => '',
-        :monitor_files => true  
+        :monitor_files => true,
+        :token => 'abc123'  
       })
     )
 

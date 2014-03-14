@@ -1,7 +1,6 @@
 Loggly rsyslog Cookbook
 ================
-Installs and configures rsyslog for use with [Loggly](http://loggly.com). This cookbook was built upon the work from an existing cookbook,
-https://github.com/kdaniels/loggly-rsyslog.
+Installs and configures rsyslog for use with [Loggly](http://loggly.com). This cookbook was built upon the work from an existing cookbook, https://github.com/kdaniels/loggly-rsyslog.
 
 Requirements
 ------------
@@ -13,10 +12,19 @@ Platform
 --------
 Tested against Ubuntu 12.04
 
+Data Bags
+---------
+This cookbook depends on the use of **encrypted data bags** to store the token to be used. For more information about data bags see the [Chef Data Bags](http://docs.opscode.com/essentials_data_bags.html) documentation. The data bag needs to be named `loggly` and contains an item `token`:
+
+```
+{
+    "id": "token",
+    "token": "<your token goes here>"
+}
+```
 
 Attributes
 ----------
-* `node['loggly']['token']` - Your Loggly customer token (required)
 * `node['loggly']['tags']` - A list of event tags to apply to a message (https://www.loggly.com/docs/tags/) (optional)
 
 * `node['loggly']['log_files']` - A list of files rsyslog should monitor. (optional). Below is an example
@@ -58,7 +66,6 @@ The following are attributes that manage some standard rsyslog configuration. Se
 * `node['loggly']['rsyslog']['priv_drop_to_user']` - Set the PrivDropToUser configuration value
 * `node['loggly']['rsyslog']['priv_drop_to_group']` - Set the PrivDropToGroup configuration value
 * `node['loggly']['rsyslog']['work_directory']` - Set the WorkDirectory configuration value
-
 
 Recipes
 -------

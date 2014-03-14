@@ -7,7 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
-raise "You have to set a token set in the attribute ['loggly']['token']" if node['loggly']['token'].nil?
+loggly_token = Chef::EncryptedDataBagItem.load('loggly', 'token')['token']
+raise "No token was found in the loggly databag." if loggly_token.nil?
 
 service "rsyslog"
 
@@ -20,7 +21,8 @@ template '/etc/rsyslog.conf' do
   mode 0644
   variables({
     :monitor_files => !node['loggly']['log_files'].empty? || !node['loggly']['log_dirs'].empty?,
-    :tags => node['loggly']['tags'].nil? || node['loggly']['tags'].empty? ? '' : "tag=\\\"#{node['loggly']['tags'].join("\\\" tag=\\\"")}\\\""
+    :tags => node['loggly']['tags'].nil? || node['loggly']['tags'].empty? ? '' : "tag=\\\"#{node['loggly']['tags'].join("\\\" tag=\\\"")}\\\"",
+    :token => loggly_token
   })
   notifies :restart, "service[rsyslog]", :immediate
 end

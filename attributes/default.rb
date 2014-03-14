@@ -1,4 +1,3 @@
-default['loggly']['token'] = nil
 default['loggly']['tags'] = []
 
 default['loggly']['log_files'] = []
