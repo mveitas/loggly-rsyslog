@@ -1,3 +1,5 @@
+[![Built on Travis](https://secure.travis-ci.org/mveitas/loggly-rsyslog.png?branch=master)](http://travis-ci.org/mveitas/loggly-rsyslog)
+
 Loggly rsyslog Cookbook
 ================
 Installs and configures rsyslog for use with [Loggly](http://loggly.com). This cookbook was built upon the work from an existing cookbook, https://github.com/kdaniels/loggly-rsyslog.
