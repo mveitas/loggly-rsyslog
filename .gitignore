@@ -19,3 +19,6 @@ Vagrantfile
 
 TODO.md
 
+data_bags
+encrypted_data_bag_secret
+
