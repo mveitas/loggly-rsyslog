@@ -2,13 +2,12 @@
 
 Loggly rsyslog Cookbook
 ================
-Installs and configures rsyslog for use with [Loggly](http://loggly.com). This cookbook was built upon the work from an existing cookbook, https://github.com/kdaniels/loggly-rsyslog.
+Installs and configures rsyslog for use with [Loggly](http://loggly.com). This cookbook was built upon the work from an existing cookbook, https://github.com/kdaniels/loggly-rsyslog. 
 
 Requirements
 ------------
 - Chef 11 or higher
 - **Ruby 1.9.3 or higher**
-- rsyslog is exists on the system
 
 Platform
 --------
@@ -40,7 +39,7 @@ of a hash used to describe a file to monitor.
     }
     ```
 
-* `node['loggly']['log_dirs']` - A list of directories to monitor (optional). The rsyslog.conf template will create an [imfile](http://www.rsyslog.com/doc/imfile.html) block for each file ending in '.log' in that directory. Each logdir in the list is of the format:
+* `node['loggly']['log_dirs']` - A list of directories to monitor (optional). The loggly configuration template will create an [imfile](http://www.rsyslog.com/doc/imfile.html) block for each file ending in '.log' in that directory. Each logdir in the list is of the format:
     ```
     {
         :directory => "/var/log/directory",
@@ -55,27 +54,18 @@ of a hash used to describe a file to monitor.
 * `node['loggly']['tls']['intermediate_cert_url']` - Url to the intermediate certificate
 * `node['loggly']['tls']['intermediate_cert_checksum']` - Checksum of the intermediate certificate
 
-* `node['loggly']['rsyslog']['host']` - Name of the remote loggly syslog host
+* `node['loggly']['rsyslog']['conf']` - Name of the loggly rsyslog confiugration file (defaults to /etc/rsyslog.d/10-loggly.conf)
+* `node['loggly']['rsyslog']['host']` - Name of the remote loggly syslog host (defaults to logs-01.loggly.com)
 * `node['loggly']['rsyslog']['port']` - Port of the remote loggly syslog host (defaults to 514 and if TLS is enabled to 6514)
-
-The following are attributes that manage some standard rsyslog configuration. See the rsyslog docs for more information on each of these.
-* `node['loggly']['rsyslog']['repeat_msg']` - Set the RepeatedMsgReduction configuration value
-* `node['loggly']['rsyslog']['file_owner']` - Set the FileOwnder configuration value
-* `node['loggly']['rsyslog']['file_group']` - Set the FileGroup configuration value
-* `node['loggly']['rsyslog']['file_create_mode']` - Set the FileCreateMode configuraton value
-* `node['loggly']['rsyslog']['dir_create_mode']` - Set the DirCreateMode configuraton value
-* `node['loggly']['rsyslog']['umask']` - Set the Umask configuration value
-* `node['loggly']['rsyslog']['priv_drop_to_user']` - Set the PrivDropToUser configuration value
-* `node['loggly']['rsyslog']['priv_drop_to_group']` - Set the PrivDropToGroup configuration value
-* `node['loggly']['rsyslog']['work_directory']` - Set the WorkDirectory configuration value
+* `node['loggly']['rsyslog']['input_file_poll_interval']` - Specifies how often files are to be polled for new data (defaults to 10)
 
 Recipes
 -------
-Include the default recipe in the run list or a cookbook. The rsyslog service will restart after changes to the rsyslog.conf are made.
+Include the default recipe in the run list or a cookbook. The cookbook includes the rsyslog cookbook that will install the rsyslog package and start the service if it does not exist. The rsyslog service will restart after changes to the loggly rsyslog configuration file are made.
 
-Running with Vagrant
---------------------
-The create_data_bag.rb is a helper script that can be used to create the data bag for loggly for use with Vagrant and Chef Solo. The script expects a single arguement, the value of the loggly token.
+Running Locally with Vagrant
+----------------------------
+Since the cookbook relies on using an encrypted data bag, there is some additional steps that are needed in order to run the cookbook locally using Vagrant. The create_data_bag.rb is a helper script that can be used to create the data bag for loggly for use with Vagrant and Chef Solo. The script expects a single arguement, the value of the loggly token.
 
 Add the following two lines into your Vagrantfile in the chef_solo provisioner configuration:
 

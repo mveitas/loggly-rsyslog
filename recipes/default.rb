@@ -10,12 +10,12 @@
 loggly_token = Chef::EncryptedDataBagItem.load('loggly', 'token')['token']
 raise "No token was found in the loggly databag." if loggly_token.nil?
 
-service "rsyslog"
+include_recipe "rsyslog::default"
 
 include_recipe "loggly-rsyslog::tls" if node['loggly']['tls']['enabled']
 
-template '/etc/rsyslog.conf' do
-  source 'loggly.conf.erb'
+template node['loggly']['rsyslog']['conf'] do
+  source 'rsyslog-loggly.conf.erb'
   owner 'root'
   group 'root'
   mode 0644
