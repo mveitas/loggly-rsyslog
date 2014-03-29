@@ -2,7 +2,7 @@
 # Cookbook Name:: loggly
 # Recipe:: default
 #
-# Copyright (C) 2014 AgaMatrix
+# Copyright (C) 2014 Matt Veitas
 # 
 # All rights reserved - Do Not Redistribute
 #
