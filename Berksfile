@@ -2,8 +2,5 @@ site :opscode
 
 metadata
 
-group :integration do
-  cookbook 'apt',              '~> 2.0'
-  cookbook 'yum',              '~> 2.0'
-  cookbook 'minitest-handler', '~> 0.2'
-end
+cookbook 'apt', '~> 2.0'
+cookbook 'loggly-rsyslog_test', path: 'test/cookbooks/loggly-rsyslog_test'
