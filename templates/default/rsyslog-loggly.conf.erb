@@ -25,7 +25,7 @@ $InputRunFileMonitor
 $InputFilePollInterval <%= node['loggly']['rsyslog']['input_file_poll_interval'] %>
 <% end %>
 
-$template LogglyFormat,"<%%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msgid% [<%= @token %>@41058 <%= @tags %>] %msg%\n"
+$template LogglyFormat,"<%%pri%>%protocol-version% %timestamp:::date-rfc3339% %HOSTNAME% %app-name% %procid% %msgid% [<%= node['loggly']['token']['value'] %>@41058 <%= @tags %>] %msg%\n"
 
 <% if node['loggly']['tls']['enabled'] %>
 $DefaultNetstreamDriverCAFile <%= node['loggly']['tls']['cert_path'] %>/loggly_full.crt
