@@ -8,9 +8,7 @@ describe 'loggly-rsyslog::default' do
   end
 
   let(:chef_run) do
-    ChefSpec::Runner.new(CHEF_RUN_OPTIONS) do |node|
-      node.set['loggly']['token'] = 'some_token_value'
-    end.converge(described_recipe)
+    ChefSpec::Runner.new(CHEF_RUN_OPTIONS).converge(described_recipe)
   end
 
   context 'when the loggly token is not set' do
@@ -98,7 +96,8 @@ describe 'loggly-rsyslog::default' do
       group: 'root',
       variables: ({
         :tags => '',
-        :monitor_files => false
+        :monitor_files => false,
+        :token => 'abc123'
       })
     )
   end
@@ -111,7 +110,8 @@ describe 'loggly-rsyslog::default' do
       group: 'root',
       variables: ({
         :tags => 'tag=\"test\" tag=\"foo\" tag=\"bar\"',
-        :monitor_files => false
+        :monitor_files => false,
+        :token => 'abc123'
       })
     )
   end
@@ -129,7 +129,8 @@ describe 'loggly-rsyslog::default' do
       group: 'root',
       variables: ({
         :tags => '',
-        :monitor_files => true
+        :monitor_files => true,
+        :token => 'abc123'
       })
     )
 
@@ -151,7 +152,8 @@ describe 'loggly-rsyslog::default' do
     expect(runner).to create_template('/etc/rsyslog.d/10-loggly.conf').with(
       variables: ({
         :tags => '',
-        :monitor_files => true
+        :monitor_files => true,
+        :token => 'abc123'
       })
     )
 

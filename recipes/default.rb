@@ -13,9 +13,9 @@ if node['loggly']['token']['from_databag']
 
   loggly_token = Chef::EncryptedDataBagItem.load(databag, databag_item)['token']
   raise "No token was found in databag item: #{databag}/#{databag_item}" if loggly_token.nil?
-  node.set['loggly']['token']['value'] = loggly_token
 else
   raise "When not using a Data Bag, you have to define the Loggly token manually" if node['loggly']['token']['value'].empty?
+  loggly_token = node['loggly']['token']['value']
 end
 
 include_recipe "rsyslog::default"
@@ -29,7 +29,8 @@ template node['loggly']['rsyslog']['conf'] do
   mode 0644
   variables({
     :monitor_files => !node['loggly']['log_files'].empty? || !node['loggly']['log_dirs'].empty?,
-    :tags => node['loggly']['tags'].nil? || node['loggly']['tags'].empty? ? '' : "tag=\\\"#{node['loggly']['tags'].join("\\\" tag=\\\"")}\\\""
+    :tags => node['loggly']['tags'].nil? || node['loggly']['tags'].empty? ? '' : "tag=\\\"#{node['loggly']['tags'].join("\\\" tag=\\\"")}\\\"",
+    :token => loggly_token
   })
   notifies :restart, "service[rsyslog]", :immediate
 end
