@@ -1,6 +1,5 @@
-site :opscode
+source 'https://api.berkshelf.com'
 
 metadata
 
-cookbook 'apt', '~> 2.0'
 cookbook 'loggly-rsyslog_test', path: 'test/cookbooks/loggly-rsyslog_test'
