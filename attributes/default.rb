@@ -15,7 +15,7 @@ default['loggly']['token']['databag'] = 'loggly'
 default['loggly']['token']['databag_item'] = 'token'
 default['loggly']['token']['value'] = '' # Will be set from Data Bag above by default
 
-default['loggly']['rsyslog']['conf'] = '/etc/rsyslog.d/10-loggly.conf'
+default['loggly']['rsyslog']['conf'] = '/etc/rsyslog.d/22-loggly.conf'
 
 default['loggly']['rsyslog']['host'] = 'logs-01.loggly.com'
 default['loggly']['rsyslog']['port'] = node['loggly']['tls']['enabled'] ? 6514 : 514
