@@ -3,7 +3,7 @@ require 'serverspec'
 include Serverspec::Helper::Exec
 include Serverspec::Helper::DetectOS
 
-describe file("/etc/rsyslog.d/10-loggly.conf") do
+describe file("/etc/rsyslog.d/22-loggly.conf") do
   it { should be_file }
   it { should contain "[logglytoken12345@41058 \] %msg%" }
   it { should contain "$DefaultNetstreamDriverCAFile /etc/rsyslog.d/keys/ca.d/loggly_full.crt" }

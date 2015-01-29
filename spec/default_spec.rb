@@ -39,7 +39,7 @@ describe 'loggly-rsyslog::default' do
     end
 
     it 'sets the correct token in config file' do
-      expect(chef_run).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^.*\[abc12345@41058 \] %msg%/)
+      expect(chef_run).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^.*\[abc12345@41058 \] %msg%/)
     end
   end
 
@@ -56,7 +56,7 @@ describe 'loggly-rsyslog::default' do
     end
 
     it 'sets the correct token in config file' do
-      expect(chef_run).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^.*\[logglytoken1234@41058 \] %msg%/)
+      expect(chef_run).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^.*\[logglytoken1234@41058 \] %msg%/)
     end
   end
 
@@ -78,20 +78,20 @@ describe 'loggly-rsyslog::default' do
   end
 
   it 'contains the correct TLS configuration settings' do
-    expect(chef_run).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^\$DefaultNetstreamDriverCAFile \/etc\/rsyslog.d\/keys\/ca.d\/loggly_full.crt/)
-    expect(chef_run).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^\$ActionSendStreamDriver gtls/)
-    expect(chef_run).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^\$ActionSendStreamDriverMode 1/)
-    expect(chef_run).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^\$ActionSendStreamDriverAuthMode x509\/name/)
-    expect(chef_run).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^\$ActionSendStreamDriverPermittedPeer \*\.loggly.com/)
+    expect(chef_run).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^\$DefaultNetstreamDriverCAFile \/etc\/rsyslog.d\/keys\/ca.d\/loggly_full.crt/)
+    expect(chef_run).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^\$ActionSendStreamDriver gtls/)
+    expect(chef_run).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^\$ActionSendStreamDriverMode 1/)
+    expect(chef_run).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^\$ActionSendStreamDriverAuthMode x509\/name/)
+    expect(chef_run).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^\$ActionSendStreamDriverPermittedPeer \*\.loggly.com/)
   end
 
   it 'notifies the rsyslog service to restart' do
-    rsyslog_template = chef_run.find_resource(:template, '/etc/rsyslog.d/10-loggly.conf')
+    rsyslog_template = chef_run.find_resource(:template, '/etc/rsyslog.d/22-loggly.conf')
     expect(rsyslog_template).to notify('service[rsyslog]').to(:restart)
   end
 
   it 'creates loggly rsyslog template with no tags' do
-    expect(chef_run).to create_template('/etc/rsyslog.d/10-loggly.conf').with(
+    expect(chef_run).to create_template('/etc/rsyslog.d/22-loggly.conf').with(
       owner: 'root',
       group: 'root',
       variables: ({
@@ -105,7 +105,7 @@ describe 'loggly-rsyslog::default' do
   it 'creates loggly rsyslog template with tags' do
     chef_run.node.set['loggly']['tags'] = ['test', 'foo', 'bar']
     chef_run.converge(described_recipe)
-    expect(chef_run).to create_template('/etc/rsyslog.d/10-loggly.conf').with(
+    expect(chef_run).to create_template('/etc/rsyslog.d/22-loggly.conf').with(
       owner: 'root',
       group: 'root',
       variables: ({
@@ -124,7 +124,7 @@ describe 'loggly-rsyslog::default' do
       ]
     end.converge(described_recipe)
 
-    expect(runner).to create_template('/etc/rsyslog.d/10-loggly.conf').with(
+    expect(runner).to create_template('/etc/rsyslog.d/22-loggly.conf').with(
       owner: 'root',
       group: 'root',
       variables: ({
@@ -134,13 +134,13 @@ describe 'loggly-rsyslog::default' do
       })
     )
 
-    expect(runner).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^.*\[abc123@41058 \] %msg%/)
+    expect(runner).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^.*\[abc123@41058 \] %msg%/)
 
-    expect(runner).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^\$ModLoad imfile/)
+    expect(runner).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^\$ModLoad imfile/)
 
-    expect(runner).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^\$InputFileName \/var\/log\/somefile/)
-    expect(runner).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^\$InputFileTag sometag\:/)
-    expect(runner).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^\$InputFileStateFile somefile.state/)
+    expect(runner).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^\$InputFileName \/var\/log\/somefile/)
+    expect(runner).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^\$InputFileTag sometag\:/)
+    expect(runner).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^\$InputFileStateFile somefile.state/)
   end
 
   it 'loads the imfile module when log_files is not empty' do
@@ -149,7 +149,7 @@ describe 'loggly-rsyslog::default' do
       [ { filename: '/var/log/somefile', tag: 'sometag', statefile: 'somefile.state' } ]
     end.converge(described_recipe)
 
-    expect(runner).to create_template('/etc/rsyslog.d/10-loggly.conf').with(
+    expect(runner).to create_template('/etc/rsyslog.d/22-loggly.conf').with(
       variables: ({
         :tags => '',
         :monitor_files => true,
@@ -157,8 +157,8 @@ describe 'loggly-rsyslog::default' do
       })
     )
 
-    expect(runner).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^\$ModLoad imfile/)
-    expect(runner).to render_file('/etc/rsyslog.d/10-loggly.conf').with_content(/^\$InputFilePollInterval 10/)
+    expect(runner).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^\$ModLoad imfile/)
+    expect(runner).to render_file('/etc/rsyslog.d/22-loggly.conf').with_content(/^\$InputFilePollInterval 10/)
   end
 
 end

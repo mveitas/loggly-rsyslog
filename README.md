@@ -62,7 +62,7 @@ of a hash used to describe a file to monitor.
 * `default['loggly']['token']['databag_item']` - The name of the Data Bag Item to load the credentials from (defaults to "token")
 * `default['loggly']['token']['value']` - The Loggly token. Set from the Data Bag above by default.
 
-* `node['loggly']['rsyslog']['conf']` - Name of the loggly rsyslog confiugration file (defaults to /etc/rsyslog.d/10-loggly.conf)
+* `node['loggly']['rsyslog']['conf']` - Name of the loggly rsyslog confiugration file (defaults to /etc/rsyslog.d/22-loggly.conf)
 * `node['loggly']['rsyslog']['host']` - Name of the remote loggly syslog host (defaults to logs-01.loggly.com)
 * `node['loggly']['rsyslog']['port']` - Port of the remote loggly syslog host (defaults to 514 and if TLS is enabled to 6514)
 * `node['loggly']['rsyslog']['input_file_poll_interval']` - Specifies how often files are to be polled for new data (defaults to 10)

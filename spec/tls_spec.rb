@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 describe 'loggly-rsyslog::tls' do
-  
   let(:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::Runner.new(file_cache_path: '/var/chef/cache') do |node|
       node.set['loggly']['token'] = 'some_token_value'
     end.converge(described_recipe)
   end
@@ -13,14 +12,14 @@ describe 'loggly-rsyslog::tls' do
   end
 
   it 'does not install the rsyslog-gnutls package' do
-    expect(chef_run).to install_package('rsyslog-gnutls')    
+    expect(chef_run).to install_package('rsyslog-gnutls')
   end
 
   it 'creates a directory for the certificate' do
     expect(chef_run).to create_directory('/etc/rsyslog.d/keys/ca.d').with(
       owner: 'root',
       group: 'syslog',
-      mode: 0750
+      mode: 0755
     )
   end
 
@@ -42,7 +41,7 @@ describe 'loggly-rsyslog::tls' do
   end
   
   it 'loads the imfile module when log directories are not empty' do
-    pending("Need to figure out stubbing of File.exists? as it used in many places inside Chef")
+    skip("Need to figure out stubbing of File.exists? as it used in many places inside Chef")
   end
 
 end
