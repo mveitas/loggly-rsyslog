@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'loggly-rsyslog::tls' do
   let(:chef_run) do
-    ChefSpec::Runner.new(file_cache_path: '/var/chef/cache') do |node|
+    ChefSpec::SoloRunner.new(file_cache_path: '/var/chef/cache') do |node|
       node.set['loggly']['token'] = 'some_token_value'
     end.converge(described_recipe)
   end

@@ -8,7 +8,7 @@ describe 'loggly-rsyslog::default' do
   end
 
   let(:chef_run) do
-    ChefSpec::Runner.new(CHEF_RUN_OPTIONS).converge(described_recipe)
+    ChefSpec::SoloRunner.new(CHEF_RUN_OPTIONS).converge(described_recipe)
   end
 
   context 'when the loggly token is not set' do
@@ -16,7 +16,7 @@ describe 'loggly-rsyslog::default' do
       Chef::EncryptedDataBagItem.stub(:load).with('loggly', 'token').and_return(nil)
     end
 
-    let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+    let(:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
 
     it 'raises an error' do
       expect {
@@ -32,7 +32,7 @@ describe 'loggly-rsyslog::default' do
     end
 
     let(:chef_run) do
-      ChefSpec::Runner.new(CHEF_RUN_OPTIONS) do |node|
+      ChefSpec::SoloRunner.new(CHEF_RUN_OPTIONS) do |node|
         node.set['loggly']['token']['databag'] = 'credentials'
         node.set['loggly']['token']['databag_item'] = 'loggly_token'
       end.converge(described_recipe)
@@ -49,7 +49,7 @@ describe 'loggly-rsyslog::default' do
     end
 
     let(:chef_run) do
-      ChefSpec::Runner.new(CHEF_RUN_OPTIONS) do |node|
+      ChefSpec::SoloRunner.new(CHEF_RUN_OPTIONS) do |node|
         node.set['loggly']['token']['from_databag'] = false
         node.set['loggly']['token']['value'] = 'logglytoken1234'
       end.converge(described_recipe)
@@ -62,7 +62,7 @@ describe 'loggly-rsyslog::default' do
 
   context 'when rsyslog tls is disabled' do
     let(:chef_run) do
-      ChefSpec::Runner.new(CHEF_RUN_OPTIONS) do |node|
+      ChefSpec::SoloRunner.new(CHEF_RUN_OPTIONS) do |node|
         node.set['loggly']['tls']['enabled'] = false
       end.converge(described_recipe)
     end
@@ -117,7 +117,7 @@ describe 'loggly-rsyslog::default' do
   end
 
   it 'loads the imfile module when log_files is not empty' do
-    runner = ChefSpec::Runner.new(CHEF_RUN_OPTIONS) do |node|
+    runner = ChefSpec::SoloRunner.new(CHEF_RUN_OPTIONS) do |node|
       node.set['loggly']['log_files'] =
       [ { filename: '/var/log/somefile', tag: 'sometag', statefile: 'somefile.state' },
         { filename: '/var/log/anotherfile', tag: 'anothertag', statefile: 'anotherfile.state' }
@@ -144,7 +144,7 @@ describe 'loggly-rsyslog::default' do
   end
 
   it 'loads the imfile module when log_files is not empty' do
-    runner = ChefSpec::Runner.new(CHEF_RUN_OPTIONS) do |node|
+    runner = ChefSpec::SoloRunner.new(CHEF_RUN_OPTIONS) do |node|
       node.set['loggly']['log_files'] =
       [ { filename: '/var/log/somefile', tag: 'sometag', statefile: 'somefile.state' } ]
     end.converge(described_recipe)
