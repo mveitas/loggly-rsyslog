@@ -9,4 +9,4 @@ version          '2.1.0'
 supports 'ubuntu', '>= 12.04'
 
 depends "apt", "~> 2.0"
-depends "rsyslog", "~> 1.13.0"
+depends "rsyslog", "~> 1.15.0"
