@@ -1,4 +1,4 @@
-[![Built on Travis](https://secure.travis-ci.org/mveitas/loggly-rsyslog.png?branch=master)](http://travis-ci.org/mveitas/loggly-rsyslog)
+[![Build Status](https://travis-ci.org/mveitas/loggly-rsyslog.svg?branch=master)](https://travis-ci.org/mveitas/loggly-rsyslog)
 
 Loggly rsyslog Cookbook
 ================
@@ -53,7 +53,7 @@ of a hash used to describe a file to monitor.
 * `node['loggly']['tls']['enabled']` - Set to true if communication to the remote service should use TLS (defaults to true)
 * `node['loggly']['tls']['cert_path']` - Directory where the loggly certificate should be placed
 * `node['loggly']['tls']['cert_url']` - Url to the loggly.com certificate
-* `node['loggly']['tls']['cert_checksum']` - Cchecksum of the loggly.com certificate
+* `node['loggly']['tls']['cert_checksum']` - Checksum of the loggly.com certificate
 * `node['loggly']['tls']['intermediate_cert_url']` - Url to the intermediate certificate
 * `node['loggly']['tls']['intermediate_cert_checksum']` - Checksum of the intermediate certificate
 
@@ -62,7 +62,7 @@ of a hash used to describe a file to monitor.
 * `default['loggly']['token']['databag_item']` - The name of the Data Bag Item to load the credentials from (defaults to "token")
 * `default['loggly']['token']['value']` - The Loggly token. Set from the Data Bag above by default.
 
-* `node['loggly']['rsyslog']['conf']` - Name of the loggly rsyslog confiugration file (defaults to /etc/rsyslog.d/10-loggly.conf)
+* `node['loggly']['rsyslog']['conf']` - Name of the loggly rsyslog configuration file (defaults to /etc/rsyslog.d/10-loggly.conf)
 * `node['loggly']['rsyslog']['host']` - Name of the remote loggly syslog host (defaults to logs-01.loggly.com)
 * `node['loggly']['rsyslog']['port']` - Port of the remote loggly syslog host (defaults to 514 and if TLS is enabled to 6514)
 * `node['loggly']['rsyslog']['input_file_poll_interval']` - Specifies how often files are to be polled for new data (defaults to 10)
@@ -73,7 +73,7 @@ Include the default recipe in the run list or a cookbook. The cookbook includes 
 
 Running Locally with Vagrant
 ----------------------------
-Since the cookbook relies on using an encrypted data bag, there is some additional steps that are needed in order to run the cookbook locally using Vagrant. The create_data_bag.rb is a helper script that can be used to create the data bag for loggly for use with Vagrant and Chef Solo. The script expects a single arguement, the value of the loggly token.
+Since the cookbook relies on using an encrypted data bag, there is some additional steps that are needed in order to run the cookbook locally using Vagrant. The create_data_bag.rb is a helper script that can be used to create the data bag for loggly for use with Vagrant and Chef Solo. The script expects a single argument, the value of the loggly token.
 
 Add the following two lines into your Vagrantfile in the chef_solo provisioner configuration:
 
